@@ -45,7 +45,7 @@ try:
 
     print(f"Successfully created {len(my_chunks)} chunks!\n")
 
-    for index, chunk in enumerate(my_chunks[:len(my_chunks)]):
+    for index, chunk in enumerate(my_chunks):
         print(f"--- Chunk {index + 1} (Words: {len(chunk.split())}) ---")
         print(chunk)
         print("-" * 40 + "\n")
