@@ -44,7 +44,7 @@ def recursive_chunker(text, chunk_size, seperators=["\n\n", "\n", " ", ""]):
     return final_chunks
 
 current_pdf = os.path.dirname(os.path.abspath(__file__))
-pdf_path = os.path.join(current_pdf, "..", "data", "atletPov_powerbuilding.pdf")
+pdf_path = os.path.join(current_pdf, "..", "data", "harries2015.pdf")
 pdf_path = os.path.abspath(pdf_path)
 
 try:
