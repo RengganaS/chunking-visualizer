@@ -2,7 +2,6 @@ import os
 import pypdf
 
 def load_pdf_text(file_path):
-    """Loader Data PDF"""
     extracted_text = ""
 
     with open(file_path, 'rb') as file:
@@ -53,7 +52,6 @@ try:
 
 except FileNotFoundError:
     print(f"Error: Could not find '{pdf_path}'.")
-    print("Ensure you have a folder named 'data' in the same directory as this script, containing 'sample.pdf'.")
 
 
 
