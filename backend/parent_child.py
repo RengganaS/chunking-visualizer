@@ -1,7 +1,19 @@
 import  os
 import uuid
 import pymupdf4llm
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
+
+headers_to_split_on = [
+    ("#", "Header 1"),
+    ("##", "Header 2"),
+    ("###", "Header 3"),
+    ("####", "Header 4"),
+]
+
+structural_splitter = MarkdownHeaderTextSplitter(
+    headers_to_split_on=headers_to_split_on,
+    strip_headers=True
+)
 
 parent_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=0)
 child_splitter = RecursiveCharacterTextSplitter(chunk_size=400, chunk_overlap=200)
@@ -10,18 +22,24 @@ def build_hierarchical_database(markdown_text):
     parent_document_store = {}
     child_vector_store = []
 
-    parent_chunks = parent_splitter.split_text(markdown_text)
+    structural_docs = structural_splitter.split_text(markdown_text)
 
-    for parent_text in parent_chunks:
+    parents_docs =  parent_splitter.split_documents(structural_docs)
+    for p_doc in parents_docs:
         parent_id = str(uuid.uuid4())
-        parent_document_store[parent_id] = parent_text
 
-        child_chunks = child_splitter.split_text(parent_text)
+        parent_document_store[parent_id] = {
+            "text": p_doc.page_content,
+            "metadata": p_doc.metadata
+        }
+
+        child_chunks = child_splitter.split_text(p_doc.page_content)
 
         for child_text in child_chunks:
             child_vector_store.append({
                 "parent_id": parent_id,
-                "text": child_text
+                "text": child_text,
+                "metadata": p_doc.metadata
             })
 
     return parent_document_store, child_vector_store
@@ -42,11 +60,14 @@ try:
 
     # see inside of parent and child text
     first_parent_id = list(parents_db.keys())[0]
-    first_parent_content = parents_db[first_parent_id]
+    first_parent = parents_db[first_parent_id]
+
+    first_parent_content = first_parent["text"]
+    first_parent_metadata = first_parent["metadata"]
 
     print(f"PARENT CHUNK (ID: {first_parent_id})")
+    print(f"Metadata: {first_parent_metadata}")
     print(f"Length: {len(first_parent_content)} chars")
-
     print(f"Content:\n{first_parent_content[:300]}...\n")
     print("-" * 60)
 
