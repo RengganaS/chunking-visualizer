@@ -8,6 +8,8 @@ headers_to_split_on = [
     ("##", "Header 2"),
     ("###", "Header 3"),
     ("####", "Header 4"),
+    ("#####", "Header 5"),
+    ("######", "Header 6"),
 ]
 
 structural_splitter = MarkdownHeaderTextSplitter(
@@ -44,6 +46,46 @@ def build_hierarchical_database(markdown_text):
 
     return parent_document_store, child_vector_store
 
+def evaluate_chunking_quality(child_vector_store):
+    total_chunks = len(child_vector_store)
+    if total_chunks == 0:
+        print("Error: No chunks provided for evaluation.")
+        return
+
+    lengths = [len(chunk["text"]) for chunk in child_vector_store]
+    min_len = min(lengths)
+    max_len = max(lengths)
+    avg_len = sum(lengths) // total_chunks
+
+    tiny_chunks = sum(1 for l in lengths if l < 50)
+    massive_chunks = sum(1 for l in lengths if l > 1000)
+
+    chunks_with_metadata = sum(1 for chunk in child_vector_store if chunk.get("metadata"))
+    metadata_percentage = (chunks_with_metadata / total_chunks) * 100
+
+    print("\n" + "="*40)
+    print("CHUNKING DIAGNOSTIC REPORT")
+    print("="*40)
+    print(f"Total Child Chunks Generated: {total_chunks}")
+    
+    print("\n--- SIZE DISTRIBUTION ---")
+    print(f"Smallest Chunk: {min_len} chars")
+    print(f"Largest Chunk:  {max_len} chars")
+    print(f"Average Size:   {avg_len} chars")
+    print(f"Warning: {tiny_chunks} chunks are dangerously small (< 50 chars).")
+    print(f"Warning: {massive_chunks} chunks are dangerously large (> 1000 chars).")
+
+    print("\n--- STRUCTURAL INTEGRITY ---")
+    print(f"Metadata Coverage: {metadata_percentage:.1f}%")
+    if metadata_percentage < 50:
+        print("  -> FAILURE: Most chunks lost their structural context.")
+    elif metadata_percentage == 100:
+        print("  -> SUCCESS: Every single chunk is mapped to a header.")
+        
+    print("="*40 + "\n")
+
+
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 pdf_path = os.path.join(current_dir, "..", "data", "harries2015.pdf")
 pdf_path =  os.path.abspath(pdf_path)
@@ -51,6 +93,12 @@ pdf_path =  os.path.abspath(pdf_path)
 try:
     print(f"Reading: {pdf_path}...\n")
     raw_markdown = pymupdf4llm.to_markdown(pdf_path)
+
+    # print("--- RAW MARKDOWN ---")
+    # print(raw_markdown[:3000])
+    # print("-------------------------\n")
+
+    # clean_markdown = "\n" + raw_markdown.replace('\r\n', '\n').replace('\u200b', '')
 
     parents_db, children_db = build_hierarchical_database(raw_markdown)
 
@@ -82,19 +130,7 @@ try:
 
     print("=" * 60)
 
-    print("\n--- SIMULATING VECTOR SEARCH ---")
-
-    retrieved_child = children_db[4]
-    found_parent_id =  retrieved_child["parent_id"]
-
-    print(f"1. Search matched a small chunk (Length: {len(retrieved_child['text'])} chars)")
-    print(f"   Child Text: {retrieved_child['text'][:100]}...\n")
-
-    print(f"2. Child is demanding Parent ID: {found_parent_id}")
-
-    retrieved_parent = parents_db[found_parent_id]
-
-    print(f"3. Parent retrieved! Sending {len(retrieved_parent)} characters of context to the LLM.")
+    evaluate_chunking_quality(children_db)
 
 except FileNotFoundError:
     print(f"Error: Could not find '{pdf_path}'.")
