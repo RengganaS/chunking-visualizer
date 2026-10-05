@@ -18,6 +18,7 @@ text_splitter = RecursiveCharacterTextSplitter(
 def process_embedding():
     conn = get_db_connection()
     if not conn:
+        print("Could not connect to database")
         return
 
     cursor = conn.cursor()

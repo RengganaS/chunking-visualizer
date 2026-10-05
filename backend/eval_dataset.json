@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "question": "At a fixed mean velocity of 0.50 m/s, what relative load (%1RM) does that correspond to for the squat, deadlift, bench press, bench pull, and pull-up?",
+    "expected_filename": "2023_IJSM_Garcia-Ramos_review-1.pdf",
+    "expected_pages": [5]
+  },
+  {
+    "id": 2,
+    "question": "Why is simple linear regression recommended over second-order polynomial regression for individualized load-velocity relationships?",
+    "expected_filename": "2023_IJSM_Garcia-Ramos_review-1.pdf",
+    "expected_pages": [9]
+  },
+  {
+    "id": 3,
+    "question": "For the two-point method, how close should the heaviest load be to the minimal velocity threshold, and how much faster should the lightest load's velocity be?",
+    "expected_filename": "2023_IJSM_Garcia-Ramos_review-1.pdf",
+    "expected_pages": [9]
+  },
+  {
+    "id": 4,
+    "question": "How is the 'optimal' minimal velocity threshold defined, and how does it compare to general and individual thresholds?",
+    "expected_filename": "2023_IJSM_Garcia-Ramos_review-1.pdf",
+    "expected_pages": [10]
+  },
+  {
+    "id": 5,
+    "question": "Do men or women show higher velocities at the same %1RM, and at which loads is the difference largest?",
+    "expected_filename": "2023_IJSM_Garcia-Ramos_review-1.pdf",
+    "expected_pages": [6]
+  },
+  {
+    "id": 6,
+    "question": "How many studies and participants were included in the review comparing linear and undulating periodized resistance training?",
+    "expected_filename": "harries2015.pdf",
+    "expected_pages": [11, 17]
+  },
+  {
+    "id": 7,
+    "question": "What was the meta-analysis result for squat 1RM when comparing linear vs. undulating periodization?",
+    "expected_filename": "harries2015.pdf",
+    "expected_pages": [10]
+  },
+  {
+    "id": 8,
+    "question": "How were studies classified as high, medium, or low risk of bias in the periodization review?",
+    "expected_filename": "harries2015.pdf",
+    "expected_pages": [2, 3]
+  },
+  {
+    "id": 9,
+    "question": "What practical recommendation do the authors give about short training blocks of linear or undulating periodization?",
+    "expected_filename": "harries2015.pdf",
+    "expected_pages": [12]
+  },
+  {
+    "id": 10,
+    "question": "What did the 2009 ACSM position stand recommend for training frequency in novice, intermediate, and advanced lifters aiming for hypertrophy?",
+    "expected_filename": "HowmanytimesperweekshouldamusclebetrainedtomaximizemusclehypertrophyAsystematicreviewandmeta-analysisofstudiesexaminingtheeffectsofresistancetrainingfrequency.pdf",
+    "expected_pages": [2]
+  },
+  {
+    "id": 11,
+    "question": "What were the inclusion criteria (design, minimum duration, participant age) for the training-frequency hypertrophy meta-analysis?",
+    "expected_filename": "HowmanytimesperweekshouldamusclebetrainedtomaximizemusclehypertrophyAsystematicreviewandmeta-analysisofstudiesexaminingtheeffectsofresistancetrainingfrequency.pdf",
+    "expected_pages": [3]
+  },
+  {
+    "id": 12,
+    "question": "What was the effect size difference between higher and lower training frequency in volume-equated studies?",
+    "expected_filename": "HowmanytimesperweekshouldamusclebetrainedtomaximizemusclehypertrophyAsystematicreviewandmeta-analysisofstudiesexaminingtheeffectsofresistancetrainingfrequency.pdf",
+    "expected_pages": [4, 2]
+  },
+  {
+    "id": 13,
+    "question": "What effect size estimates were found for 1, 2, and 3+ days per week in non-volume-equated studies?",
+    "expected_filename": "HowmanytimesperweekshouldamusclebetrainedtomaximizemusclehypertrophyAsystematicreviewandmeta-analysisofstudiesexaminingtheeffectsofresistancetrainingfrequency.pdf",
+    "expected_pages": [8]
+  },
+  {
+    "id": 14,
+    "question": "What was the overall effect size for muscular strength when comparing training to failure vs. non-failure?",
+    "expected_filename": "main.pdf",
+    "expected_pages": [5, 1]
+  },
+  {
+    "id": 15,
+    "question": "Why did non-volume-equated studies favor non-failure training for strength gains?",
+    "expected_filename": "main.pdf",
+    "expected_pages": [5]
+  },
+  {
+    "id": 16,
+    "question": "Why might training to failure not be needed for hypertrophy with moderate-to-high loads (motor unit recruitment)?",
+    "expected_filename": "main.pdf",
+    "expected_pages": [6]
+  },
+  {
+    "id": 17,
+    "question": "Which checklist was used to assess methodological quality in the failure vs. non-failure review?",
+    "expected_filename": "main.pdf",
+    "expected_pages": [2]
+  },
+  {
+    "id": 18,
+    "question": "What correlations were found between RPE and barbell velocity for the squat, bench press, and deadlift in powerlifters?",
+    "expected_filename": "RPE_volume_autoregulation.pdf",
+    "expected_pages": [4]
+  },
+  {
+    "id": 19,
+    "question": "By how much was load increased for each 0.5 RPE below the goal RPE when prescribing the second top set?",
+    "expected_filename": "RPE_volume_autoregulation.pdf",
+    "expected_pages": [8, 9]
+  },
+  {
+    "id": 20,
+    "question": "What were the combined weekly relative volume loads for the 2%, 4%, and 6% RPE stop weeks?",
+    "expected_filename": "RPE_volume_autoregulation.pdf",
+    "expected_pages": [21, 4]
+  }
+]

@@ -8,6 +8,7 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 def search_pappers(question, top_k=3):
     conn = get_db_connection()
     if not conn:
+        print("Could not connect to database")
         return
 
     cursor = conn.cursor()
