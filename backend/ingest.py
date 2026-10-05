@@ -60,13 +60,32 @@ def process_pdf(filepath, conn):
             # extract and chunk by page
             for page_num, page in enumerate(pdf.pages):
                 raw_page_text = page.extract_text(layout=True)
-                cleaned_page_text = clean_pdf_text(raw_page_text)
+
+                stop_extraction = False
+                valid_lines = []
+
+                if raw_page_text:
+                    for line in raw_page_text.split('\n'):
+                        alpha_only = re.sub(r'[^a-zA-Z]', '', line).lower()
+
+                        if alpha_only in ['references', 'bibliography', 'authorcontributions', 'literaturecited']:
+                            print(f"Hit '{line.strip()}' section on page {page_num + 1}. Stopping extraction for {filename}.")
+                            stop_extraction = True
+                            break
+
+                        valid_lines.append(line)
+
+                sliced_page_text = '\n'.join(valid_lines)
+                cleaned_page_text = clean_pdf_text(sliced_page_text)
 
                 if cleaned_page_text and cleaned_page_text.strip():
                     cursor.execute("""
                         INSERT INTO parent_chunks (document_id, content, page_start, page_end, parent_ordinal)
                         VALUES (%s, %s, %s, %s, %s)
                     """, (doc_id, cleaned_page_text, page_num + 1, page_num + 1, page_num + 1))
+
+                if stop_extraction:
+                    break
 
             cursor.execute("""
                 INSERT INTO ingestion_runs (source_filename, source_sha256, extraction_method, status)
