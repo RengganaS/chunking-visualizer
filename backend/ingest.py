@@ -2,6 +2,7 @@ import os
 import hashlib
 import pdfplumber
 import psycopg2
+import re
 from db import get_db_connection
 
 DATA_DIR = "data"
@@ -13,6 +14,24 @@ def get_file_hash(filepath):
         for byte_block in iter(lambda: f.read(4096), b""):
             sha256_hash.update(byte_block)
     return sha256_hash.hexdigest()
+
+def clean_pdf_text(text: str) -> str:
+    if not text:
+        return ""
+
+    # remove font/ligature encoding
+    text = re.sub(r'\(cid:\d+\)', '', text)
+
+    # remove fix words split
+    text = re.sub(r'(\w+)-\s*\n\s*(\w+)', r'\1\2', text)
+
+    # add space between words
+    text = re.sub(r'([a-zA-Z])(\d+)', r'\1 \2', text)
+
+    # collaps all mulit space and new line
+    text = re.sub(r'\s+', ' ', text)
+
+    return text.strip()
 
 def process_pdf(filepath, conn):
     filename = os.path.basename(filepath)
@@ -40,13 +59,14 @@ def process_pdf(filepath, conn):
 
             # extract and chunk by page
             for page_num, page in enumerate(pdf.pages):
-                text = page.extract_text(layout=True)
+                raw_page_text = page.extract_text(layout=True)
+                cleaned_page_text = clean_pdf_text(raw_page_text)
 
-                if text and text.strip():
+                if cleaned_page_text and cleaned_page_text.strip():
                     cursor.execute("""
                         INSERT INTO parent_chunks (document_id, content, page_start, page_end, parent_ordinal)
                         VALUES (%s, %s, %s, %s, %s)
-                    """, (doc_id, text, page_num + 1, page_num + 1, page_num + 1))
+                    """, (doc_id, cleaned_page_text, page_num + 1, page_num + 1, page_num + 1))
 
             cursor.execute("""
                 INSERT INTO ingestion_runs (source_filename, source_sha256, extraction_method, status)

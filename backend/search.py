@@ -64,7 +64,7 @@ def search_pappers(question, top_k=3):
         conn.close()
 
 if __name__ == "__main__":
-    question = "What training frequency or volume was used?"
+    question = "How was RPE used for autoregulation?"
     search_pappers(question)
 
 
